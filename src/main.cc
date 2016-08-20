@@ -16,6 +16,7 @@ int main () {
   mnist_loader test(labels, images);
   cout << "Image Filename: " << test.get_imageFileName() << endl;
   cout << "Label Filename: " << test.get_labelFileName() << endl;
+  test.load_labels();
   test.load_images();
 
   return 0;
