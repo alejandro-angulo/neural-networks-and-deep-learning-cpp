@@ -59,16 +59,36 @@ mnist_loader::mnist_loader (std::string labelFileName, std::string imageFileName
 
 // Destructor
 mnist_loader::~mnist_loader () {
-  for (int i = 0; i < num_images; ++i) {
-    delete[] images[i];
-  }
-  delete[] images;
+  // for (int i = 0; i < num_images; ++i) {
+  //   delete[] images[i];
+  // }
+  // delete[] images;
 }
 
 
 // Getters
 std::string mnist_loader::get_labelFileName () { return labelFileName; }
 std::string mnist_loader::get_imageFileName () { return imageFileName; }
+// void mnist_loader::get_image (int image_index) {
+//   std::cout << "Getting image " << image_index << '.' << std::endl;
+//   std::cout << (int)labels[image_index] << std::endl;
+//   unsigned char image[this->ROWS][this->COLS];
+//
+//   int row_number = -1;
+//   for (int i = 0; i < this->IMAGE_SIZE; ++i) {
+//     // std::cout << (int)images[image_index][i] << std::endl;
+//     int mod_i = i % this->ROWS;
+//     if ( (mod_i) == 0 ) ++row_number;
+//     image[row_number][mod_i] = images[image_index][i];
+//   }
+//
+//   for (int i = 0; i < this->ROWS; ++i) {
+//     for (int j = 0; j < this->COLS; ++j) {
+//       std::cout << std::setfill('0') << std::setw(3) << (int)image[i][j] << ' ';
+//     }
+//     std::cout << std::endl;
+//   }
+// }
 
 // Load Files
 void mnist_loader::load_labels () {
@@ -98,9 +118,6 @@ void mnist_loader::load_labels () {
     file.read( (char *)&temp, this->LABEL_SIZE );
     this->labels.push_back(temp);
   }
-
-  std::cout << "Shuffling labels..." << std::endl;
-  std::random_shuffle( labels.begin(), labels.end() );
 }
 
 void mnist_loader::load_images () {
@@ -124,20 +141,19 @@ void mnist_loader::load_images () {
   num_images = reverseInt(num_images);
   std::cout << "There are " << num_images << " images." << std::endl;
 
-  images = new unsigned char* [num_images];
+  images = new unsigned char** [num_images];
 
   file.seekg(this->IMAGE_OFFSET);
   std::cout << "Reading images..." << std::endl;
   for (int i = 0; i < num_images; ++i) {
-    images[i] =  new unsigned char [this->IMAGE_SIZE];
-    for (int j = 0; j < this->IMAGE_SIZE; ++j) {
-      unsigned char temp;
-      file.read( (char *)&temp, 1 );
-      images[i][j] = temp;
+    for (int j = 0; j < this->ROWS; ++j) {
+      images[i] = new unsigned char* [this->ROWS];
+      for (int k = 0; k < this->COLS; ++k) {
+        images[i][j] = new unsigned char [this->COLS];
+        unsigned char temp;
+        file.read( (char *)&temp, 1 );
+        images[i][j][k] = temp;
+      }
     }
   }
-
-  srand( (unsigned) time(NULL) );
-  std::cout << "Shuffling images..." << std::endl;
-  shuffle(images, num_images);
 }

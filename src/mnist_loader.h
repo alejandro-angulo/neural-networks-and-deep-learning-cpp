@@ -2,11 +2,12 @@
 #define MNIST_LOADER
 
 #include <algorithm>
-#include <string>
+#include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <iterator>
 #include <linux/limits.h> // for PATH_MAX
-#include <fstream>
+#include <string>
 #include <vector>
 
 class mnist_loader {
@@ -14,7 +15,7 @@ class mnist_loader {
   std::string imageFileName;
 
   std::vector<unsigned char> labels;
-  unsigned char** images;
+  unsigned char*** images;
 
   int num_images;
   int num_labels;
@@ -56,6 +57,7 @@ class mnist_loader {
     // Getters
     std::string get_labelFileName ();
     std::string get_imageFileName ();
+    void get_image (int);
 
     // Load Files
     void load_labels ();
