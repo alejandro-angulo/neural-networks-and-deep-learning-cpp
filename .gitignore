@@ -1,3 +1,6 @@
+# Logging files
+*.txt
+
 # Uncompressed data (only include compressed files)
 data/*
 !data/*.gz
