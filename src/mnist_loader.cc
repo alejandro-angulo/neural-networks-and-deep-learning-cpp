@@ -59,36 +59,31 @@ mnist_loader::mnist_loader (std::string labelFileName, std::string imageFileName
 
 // Destructor
 mnist_loader::~mnist_loader () {
-  // for (int i = 0; i < num_images; ++i) {
-  //   delete[] images[i];
-  // }
-  // delete[] images;
+  std::cout << "Destructing..." << std::endl;
+  for (int i = 0; i < num_images; ++i) {
+    for (int j = 0; j < this->ROWS; ++j) {
+      delete[] images[i][j];
+    }
+    delete[] images[i];
+  }
+  delete[] images;
 }
 
 
 // Getters
 std::string mnist_loader::get_labelFileName () { return labelFileName; }
 std::string mnist_loader::get_imageFileName () { return imageFileName; }
-// void mnist_loader::get_image (int image_index) {
-//   std::cout << "Getting image " << image_index << '.' << std::endl;
-//   std::cout << (int)labels[image_index] << std::endl;
-//   unsigned char image[this->ROWS][this->COLS];
-//
-//   int row_number = -1;
-//   for (int i = 0; i < this->IMAGE_SIZE; ++i) {
-//     // std::cout << (int)images[image_index][i] << std::endl;
-//     int mod_i = i % this->ROWS;
-//     if ( (mod_i) == 0 ) ++row_number;
-//     image[row_number][mod_i] = images[image_index][i];
-//   }
-//
-//   for (int i = 0; i < this->ROWS; ++i) {
-//     for (int j = 0; j < this->COLS; ++j) {
-//       std::cout << std::setfill('0') << std::setw(3) << (int)image[i][j] << ' ';
-//     }
-//     std::cout << std::endl;
-//   }
-// }
+void mnist_loader::get_image (int image_index) {
+  std::cout << "Getting image " << image_index << '.' << std::endl;
+  std::cout << (int)labels[image_index] << std::endl;
+
+  for (int row = 0; row < this->ROWS; ++row) {
+    for (int col = 0; col < this->COLS; ++col) {
+      std::cout << std::setfill('0') << std::setw(3) << (int)images[image_index][row][col] << ' ';
+    }
+    std::cout << std::endl;
+  }
+}
 
 // Load Files
 void mnist_loader::load_labels () {
@@ -145,14 +140,14 @@ void mnist_loader::load_images () {
 
   file.seekg(this->IMAGE_OFFSET);
   std::cout << "Reading images..." << std::endl;
-  for (int i = 0; i < num_images; ++i) {
-    for (int j = 0; j < this->ROWS; ++j) {
-      images[i] = new unsigned char* [this->ROWS];
-      for (int k = 0; k < this->COLS; ++k) {
-        images[i][j] = new unsigned char [this->COLS];
+  for (int img = 0; img < num_images; ++img) {
+    images[img] = new unsigned char* [this->ROWS];
+    for (int row = 0; row < this->ROWS; ++row) {
+      images[img][row] = new unsigned char [this->COLS];
+      for (int col = 0; col < this->COLS; ++col) {
         unsigned char temp;
         file.read( (char *)&temp, 1 );
-        images[i][j][k] = temp;
+        images[img][row][col] = temp;
       }
     }
   }
