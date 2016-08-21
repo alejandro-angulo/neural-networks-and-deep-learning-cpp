@@ -59,7 +59,6 @@ mnist_loader::mnist_loader (std::string labelFileName, std::string imageFileName
 
 // Destructor
 mnist_loader::~mnist_loader () {
-  std::cout << "Destructing..." << std::endl;
   for (int i = 0; i < num_images; ++i) {
     for (int j = 0; j < this->ROWS; ++j) {
       delete[] images[i][j];
