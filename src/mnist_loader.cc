@@ -73,9 +73,8 @@ mnist_loader::~mnist_loader () {
 // Getters
 std::string mnist_loader::get_labelFileName () { return labelFileName; }
 std::string mnist_loader::get_imageFileName () { return imageFileName; }
-unsigned char** mnist_loader::get_image (int image_index) {
-  return images[image_index];
-}
+unsigned char** mnist_loader::get_image (int i) { return images[i]; }
+unsigned char   mnist_loader::get_label (int i) { return labels[i]; }
 
 // Load Files
 void mnist_loader::load_labels () {
