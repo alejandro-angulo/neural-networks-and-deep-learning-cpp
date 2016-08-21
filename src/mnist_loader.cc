@@ -73,16 +73,8 @@ mnist_loader::~mnist_loader () {
 // Getters
 std::string mnist_loader::get_labelFileName () { return labelFileName; }
 std::string mnist_loader::get_imageFileName () { return imageFileName; }
-void mnist_loader::get_image (int image_index) {
-  std::cout << "Getting image " << image_index << '.' << std::endl;
-  std::cout << (int)labels[image_index] << std::endl;
-
-  for (int row = 0; row < this->ROWS; ++row) {
-    for (int col = 0; col < this->COLS; ++col) {
-      std::cout << std::setfill('0') << std::setw(3) << (int)images[image_index][row][col] << ' ';
-    }
-    std::cout << std::endl;
-  }
+unsigned char** mnist_loader::get_image (int image_index) {
+  return images[image_index];
 }
 
 // Load Files
@@ -150,5 +142,15 @@ void mnist_loader::load_images () {
         images[img][row][col] = temp;
       }
     }
+  }
+}
+
+// Misc.
+void mnist_loader::print_image (int image_index) {
+  for (int row = 0; row < this->ROWS; ++row) {
+    for (int col = 0; col < this->COLS; ++col) {
+      std::cout << std::setfill('0') << std::setw(3) << (int)images[image_index][row][col] << ' ';
+    }
+    std::cout << std::endl;
   }
 }

@@ -57,11 +57,14 @@ class mnist_loader {
     // Getters
     std::string get_labelFileName ();
     std::string get_imageFileName ();
-    void get_image (int);
+    unsigned char** get_image (int);
 
     // Load Files
     void load_labels ();
     void load_images ();
+
+    // Misc.
+    void print_image (int);
 };
 
 #endif
