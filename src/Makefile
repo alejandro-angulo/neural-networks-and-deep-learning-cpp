@@ -1,5 +1,5 @@
 TARGET = test.out
-SRCS = main.cc mnist_loader.cc
+SRCS = main.cc mnist_loader.cc network.cc
 OBJS = $(subst .cc,.o,$(SRCS))
 CC = g++
 DEBUG = -g
@@ -15,6 +15,9 @@ mnist_loader.o: mnist_loader.cc mnist_loader.h
 
 main.o: main.cc
 	$(CC) $(CFLAGS) $(DEBUG) main.cc
+
+network.o: network.cc network.h
+	$(CC) $(CFLAGS) $(DEBUG) network.cc
 
 clean:
 	$(RM) $(OBJS)
